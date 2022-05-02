@@ -1,0 +1,15 @@
+.container{ 
+  text-align: center;
+  height: 100vh;
+}
+.timer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: rgb(211, 40, 91) 14px solid;
+    margin: 20px auto;
+    width: 315px;
+    height: 315px;
+    border-radius: 50%;
+    font-size: 5.2rem;
+}
