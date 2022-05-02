@@ -9,31 +9,41 @@ export const Container = () => {
   const [timerStatus, setTimerStatus] = useState(false); 
   const [curBreak,setCurBreak] = useState('focus');
 
+  //Initial times in miliseconds
+  const focusTime=1500000;
+  const shortTime=300000;
+  const longTime=1200000;
+
   const handleFocus = () => {
-    setTime(25*60*1000);
+    setTime(focusTime);
     setCurBreak('focus');
+    setTimerStatus(false);
   };
   const handleShort = () => {
-    setTime(5*60*1000);
+    setTime(shortTime);
     setCurBreak('short');
     setTimerStatus(false);
   };
 
   const handleLong = () => {
-    setTime(20*60*1000);
+    setTime(longTime);
     setCurBreak('long');
     setTimerStatus(false);
   };
   const handleStart = () => {
-    if(time!==0){
-     if(curBreak==='focus'){
-      handleFocus();
-     }else if(curBreak==='short'){
-      handleShort();
-     }else{
-      handleLong();
-     }
+    const initialTimes=[focusTime,shortTime,longTime];
+    let curTime = initialTimes.includes(time);
+    if(!curTime & time!==0){
       setTimerStatus(true);
+    }else{     
+      if(curBreak==='focus'){
+        handleFocus();
+       }else if(curBreak==='short'){
+        handleShort();
+       }else{
+        handleLong();
+       }   
+       setTimerStatus(true);
     }
   };
   const handleStop = () => {
@@ -46,7 +56,7 @@ export const Container = () => {
       handleShort();
     }else{
       handleLong();
-    }    
+    }
  };
 const toMinutes=()=>{
   return ("0"+Math.floor((time/1000/60)%60)).slice(-2);
@@ -54,9 +64,9 @@ const toMinutes=()=>{
 const toSeconds=()=>{
   return ("0"+Math.floor((time/1000)%60)).slice(-2);
 }
-  const decreaseTimer = () => {
+ const decreaseTimer = () => {
     setTime((time) => {
-      if (time !== 0) {
+      if (time) {
         return time - 1000;
       }
       return 0;
@@ -65,14 +75,13 @@ const toSeconds=()=>{
 
   useEffect(()=>{
     let timeInterval = null;
-    if(timerStatus & time!==0){
+    if(timerStatus){
       timeInterval=setInterval(decreaseTimer,1000);
     }else{
       clearInterval(timeInterval);
     }
     return ()=>clearInterval(timeInterval);
-  },[timerStatus,time]);
-
+  },[timerStatus]);
   return (
     <div className="container">
       <Header title={"Timer"} />
