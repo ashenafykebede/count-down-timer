@@ -16,15 +16,24 @@ export const Container = () => {
   const handleShort = () => {
     setTime(5*60*1000);
     setCurBreak('short');
+    setTimerStatus(false);
   };
 
   const handleLong = () => {
     setTime(20*60*1000);
     setCurBreak('long');
+    setTimerStatus(false);
   };
   const handleStart = () => {
     if(time!==0){
-    setTimerStatus(true);
+     if(curBreak==='focus'){
+      handleFocus();
+     }else if(curBreak==='short'){
+      handleShort();
+     }else{
+      handleLong();
+     }
+      setTimerStatus(true);
     }
   };
   const handleStop = () => {
@@ -62,7 +71,7 @@ const toSeconds=()=>{
       clearInterval(timeInterval);
     }
     return ()=>clearInterval(timeInterval);
-  },[timerStatus]);
+  },[timerStatus,time]);
 
   return (
     <div className="container">
